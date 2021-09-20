@@ -1,5 +1,9 @@
 'use strict';
 
+import DashBoard from "./views/DashBoard.js";
+import Posts from "./views/Posts.js";
+import Settings from "./views/Settings.js";
+
 const navigateTo = url => {
     history.pushState(null, null, url);
     router();
@@ -7,9 +11,9 @@ const navigateTo = url => {
 
 const router = async () => {
     const routes = [
-        {path: "/", view: () => console.log("Dashboard")},
-        {path: "/posts", view: () => console.log("Posts")},
-        {path: "/settings", view: () => console.log("Settings")},
+        {path: "/", view: DashBoard},
+        {path: "/posts", view: Posts},
+        {path: "/settings", view: Settings},
     ];
 
     const potentialMatches = routes.map(route => {
@@ -28,7 +32,8 @@ const router = async () => {
         };
     }
 
-    console.log(match.route.view());
+    const view = new match.route.view();
+    document.querySelector("#app").innerHTML = await view.getHTML();
 };
 
 window.addEventListener("popstate", router);
